@@ -1,5 +1,6 @@
+import type VariantComponent from "@/shared/types/VariantComponent";
 import cn from "@/shared/util/cn";
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import type { FC, PropsWithChildren } from "react";
 
 const stack = cva("flex w-fit items-center", {
@@ -25,10 +26,9 @@ const stack = cva("flex w-fit items-center", {
 	},
 });
 
-interface StackProps extends PropsWithChildren {
-	className?: string;
-	config?: VariantProps<typeof stack>;
-}
+interface StackProps
+	extends PropsWithChildren,
+		VariantComponent<typeof stack> {}
 
 const Stack: FC<StackProps> = ({ children, className, config }) => {
 	const classes = cn(stack({ ...config }), className);
