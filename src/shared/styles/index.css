@@ -1,5 +1,9 @@
 :root {
-  --transition: 150;
+  --transition: 150ms;
+}
+
+button {
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=index.css.map */
