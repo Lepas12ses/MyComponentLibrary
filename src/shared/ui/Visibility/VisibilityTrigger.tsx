@@ -1,21 +1,18 @@
-import {
-	cloneElement,
-	type FC,
-	type HTMLAttributes,
-	type ReactElement,
-} from "react";
+import { type FC, type ReactNode } from "react";
 import useVisibilityContext from "./VisibilityContext";
 
 interface VisibilityTriggerProps {
-	children: ReactElement<HTMLAttributes<HTMLElement>>;
+	render: (options: {
+		toggle: () => void;
+		show: () => void;
+		hide: () => void;
+	}) => ReactNode;
 }
 
-const VisibilityTrigger: FC<VisibilityTriggerProps> = ({ children }) => {
-	const { toggle } = useVisibilityContext();
+const VisibilityTrigger: FC<VisibilityTriggerProps> = ({ render }) => {
+	const { toggle, show, hide } = useVisibilityContext();
 
-	const cloned = cloneElement(children, { onClick: toggle });
-
-	return cloned;
+	return render({ toggle, show, hide });
 };
 
 export default VisibilityTrigger;

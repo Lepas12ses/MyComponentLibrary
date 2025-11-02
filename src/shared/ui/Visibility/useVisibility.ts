@@ -1,26 +1,20 @@
-import {
-	useCallback,
-	useEffect,
-	useId,
-	useState,
-	type FC,
-	type PropsWithChildren,
-} from "react";
-import {
-	VisibilityContext,
-	type IVisibilityContext,
-} from "./VisibilityContext";
+import { useCallback, useEffect, useId, useState } from "react";
 
-interface VisibilityProviderProps extends PropsWithChildren {
-	name?: string;
-}
-
-const VisibilityProvider: FC<VisibilityProviderProps> = ({
-	name,
-	children,
-}) => {
+export default function useVisibility(name: string) {
 	const [isVisible, setIsVisible] = useState(false);
 	const uniqueId = useId();
+
+	const show = useCallback(() => {
+		setIsVisible(true);
+	}, []);
+
+	const hide = useCallback(() => {
+		setIsVisible(false);
+	}, []);
+
+	const toggle = useCallback(() => {
+		setIsVisible(prev => !prev);
+	}, []);
 
 	useEffect(() => {
 		if (name) {
@@ -61,26 +55,5 @@ const VisibilityProvider: FC<VisibilityProviderProps> = ({
 		}
 	}, [isVisible, name, uniqueId]);
 
-	const toggle = useCallback(() => {
-		setIsVisible(prev => !prev);
-	}, []);
-
-	const show = useCallback(() => {
-		setIsVisible(true);
-	}, []);
-
-	const hide = useCallback(() => {
-		setIsVisible(false);
-	}, []);
-
-	const ctxValue: IVisibilityContext = {
-		isVisible,
-		toggle,
-		show,
-		hide,
-	};
-
-	return <VisibilityContext value={ctxValue}>{children}</VisibilityContext>;
-};
-
-export default VisibilityProvider;
+	return { isVisible, show, hide, toggle };
+}
